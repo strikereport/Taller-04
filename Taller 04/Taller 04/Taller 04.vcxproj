@@ -111,6 +111,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Controlador.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Vista.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Controlador.h" />
+    <ClInclude Include="Vista.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
