@@ -4,5 +4,6 @@ class Controlador
 public:
 	Controlador();
 	~Controlador();
+	int ValidarNumeroOpcion();
 };
 
