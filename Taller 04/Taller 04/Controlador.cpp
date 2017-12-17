@@ -1,7 +1,9 @@
 #include "Controlador.h"
 #include <iostream>
+#include <ctime> 
 using namespace std;
-
+int arr[] = { 1254,1253,5,3,9,6,7,1,15,21,13 };
+int n = sizeof(arr) / sizeof(arr[0]);
 
 Controlador::Controlador()
 {
@@ -39,6 +41,13 @@ int Controlador::ValidarNumeroOpcion()
 	return dato;
 }
 
+void Controlador::Imprimirarreglo(int arr[], int n)
+{
+	for (int i = 0; i<n; ++i)
+		cout << arr[i] << " ";
+	cout << "\n";
+}
+
 void Controlador::HeapsortSecuencial(int arr[], int n)
 {
 	for (int i = n / 2 - 1; i >= 0; i--)
@@ -53,6 +62,40 @@ void Controlador::HeapsortSecuencial(int arr[], int n)
 
 void Controlador::HeapsortParalelo()
 {
+}
+
+void Controlador::QuickSortS()
+{
+	cout << "Nombre del algoritmo utilizado : Heapsort Secuencial" << endl;
+	cout << "Numero de datos del arreglo" << " " << endl;
+	cout << "Arreglo Original" << endl;
+	Imprimirarreglo(arr, n);
+	unsigned t0, t1;
+	t0 = clock();
+	QuickSortSecuencial(arr, 0, n - 1);
+	t1 = clock();
+	double tiempo = (double(t1 - t0) / CLOCKS_PER_SEC);
+	cout << "Arreglo ordenado" << endl;
+	Imprimirarreglo(arr, n);
+	cout << "tiempo que demoro el ordenamiento" << "  " << tiempo << endl;
+	system("pause");
+}
+
+void Controlador::HeapsortS()
+{
+	cout << "Nombre del algoritmo utilizado : Heapsort Secuencial" << endl;
+	cout << "Numero de datos del arreglo" << " " << endl;
+	cout << "Arreglo Original" << endl;
+	Imprimirarreglo(arr, n);
+	unsigned t0, t1;
+	t0 = clock();
+	HeapsortSecuencial(arr, n);
+	t1 = clock();
+	double tiempo = (double(t1 - t0) / CLOCKS_PER_SEC);
+	cout << "Arreglo ordenado" << endl;
+	Imprimirarreglo(arr, n);
+	cout << "tiempo que demoro el ordenamiento" <<"  "<< tiempo << endl;
+	system("pause");
 }
 
 void Controlador::QuickSortSecuencial(int arr[], int bajo, int alto)
@@ -121,4 +164,8 @@ int Controlador::particion(int arr[], int bajo, int alto)
 	}
 	swapquick(&arr[i + 1], &arr[alto]); //intercambiar
 	return (i + 1);
+}
+
+void Controlador::LeerArchivo()
+{
 }

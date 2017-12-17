@@ -2,8 +2,6 @@
 #include <iostream>
 #include <stdlib.h>
 using namespace std;
-int arr[] = { 1254,1253,5,3,9,6,7,1,15,21,13 };
-int n = sizeof(arr) / sizeof(arr[0]);
 
 Vista::Vista()
 {
@@ -72,9 +70,9 @@ void Vista::MenuArreglo()
 		//desplegamos el menu por pantalla
 		cout << " Menu  de arreglo" << endl << endl;
 		cout << "[1] Algoritmo quicksort secuencial  " << endl;
-		cout << "[1] Algoritmo quicksort con paralelismo  " << endl;
-		cout << "[1] Algoritmo heapsort secuencial " << endl;
-		cout << "[1] Algoritmo heapsort con paralelismo  " << endl;
+		cout << "[2] Algoritmo quicksort con paralelismo  " << endl;
+		cout << "[3] Algoritmo heapsort secuencial " << endl;
+		cout << "[4] Algoritmo heapsort con paralelismo  " << endl;
 		cout << "[5] Regresar al menu Principal " << endl;
 		//validamos que la opcion sea un numero
 		opcion = Ejecutar.ValidarNumeroOpcion();
@@ -84,7 +82,7 @@ void Vista::MenuArreglo()
 		case 1:
 			//limpiamos la pantalla
 			system("cls");
-			Ejecutar.QuickSortSecuencial(arr, 0, n - 1);
+			Ejecutar.QuickSortS();
 			break;
 		case 2:
 			//limpiamos la pantalla
@@ -94,7 +92,7 @@ void Vista::MenuArreglo()
 		case 3:
 			//limpiamos la pantalla
 			system("cls");
-			Ejecutar.HeapsortSecuencial(arr, n);
+			Ejecutar.HeapsortS();
 			break;
 		case 4:
 			Ejecutar.HeapsortParalelo();
