@@ -2,8 +2,8 @@
 #include <iostream>
 #include <stdlib.h>
 using namespace std;
-
-
+int arr[] = { 1254,1253,5,3,9,6,7,1,15,21,13 };
+int n = sizeof(arr) / sizeof(arr[0]);
 
 Vista::Vista()
 {
@@ -84,16 +84,20 @@ void Vista::MenuArreglo()
 		case 1:
 			//limpiamos la pantalla
 			system("cls");
+			Ejecutar.QuickSortSecuencial(arr, 0, n - 1);
 			break;
 		case 2:
 			//limpiamos la pantalla
 			system("cls");
+			Ejecutar.QuickSortParalelo();
 			break;
 		case 3:
 			//limpiamos la pantalla
 			system("cls");
+			Ejecutar.HeapsortSecuencial(arr, n);
 			break;
 		case 4:
+			Ejecutar.HeapsortParalelo();
 			//limpiamos la pantalla
 			system("cls");
 			break;

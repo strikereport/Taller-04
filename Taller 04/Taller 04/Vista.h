@@ -8,5 +8,6 @@ public:
 	void MenuPrincipal();
 	void MenuArreglo();
 	Controlador Ejecutar;
+
 };
 
