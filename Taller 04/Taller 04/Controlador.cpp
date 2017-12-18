@@ -1,4 +1,5 @@
 #include "Controlador.h"
+#include <time.h>
 #include <iostream>
 #include <ctime> 
 #include <fstream>
@@ -6,7 +7,6 @@
 #include <vector>
 using namespace std;
 vector<int> arr;
-int n = sizeof(arr) / sizeof(arr[0]);
 
 Controlador::Controlador()
 {
@@ -44,131 +44,6 @@ int Controlador::ValidarNumeroOpcion()
 	return dato;
 }
 
-void Controlador::Imprimirarreglo(vector<int> arr)
-{
-	for (int i = 0; i<arr.size(); ++i)
-		cout << arr[i] << " ";
-	cout << "\n";
-}
-
-void Controlador::HeapsortSecuencial(int arr[], int n)
-{
-	for (int i = n / 2 - 1; i >= 0; i--)
-		heap(arr, n, i);
-
-	for (int i = n - 1; i >= 0; i--)
-	{
-		swap(arr[0], arr[i]);
-		heap(arr, i, 0);
-	}
-}
-
-void Controlador::HeapsortParalelo()
-{
-}
-
-void Controlador::QuickSortS()
-{
-	cout << "Nombre del algoritmo utilizado : Heapsort Secuencial" << endl;
-	cout << "Numero de datos del arreglo" << " " << endl;
-	cout << "Arreglo Original" << endl;
-	Imprimirarreglo(arr);
-	unsigned t0, t1;
-	t0 = clock();
-	QuickSortSecuencial(arr, 0, n - 1);
-	t1 = clock();
-	double tiempo = (double(t1 - t0) / CLOCKS_PER_SEC);
-	cout << "Arreglo ordenado" << endl;
-	Imprimirarreglo(arr, n);
-	cout << "tiempo que demoro el ordenamiento" << "  " << tiempo << endl;
-	system("pause");
-}
-
-void Controlador::HeapsortS()
-{
-	cout << "Nombre del algoritmo utilizado : Heapsort Secuencial" << endl;
-	cout << "Numero de datos del arreglo" << " " << endl;
-	cout << "Arreglo Original" << endl;
-	Imprimirarreglo(arr, n);
-	unsigned t0, t1;
-	t0 = clock();
-	HeapsortSecuencial(arr, n);
-	t1 = clock();
-	double tiempo = (double(t1 - t0) / CLOCKS_PER_SEC);
-	cout << "Arreglo ordenado" << endl;
-	Imprimirarreglo(arr, n);
-	cout << "tiempo que demoro el ordenamiento" <<"  "<< tiempo << endl;
-	system("pause");
-}
-
-void Controlador::QuickSortSecuencial(vector<int> arr, int bajo, int alto)
-{
-	if (bajo < alto)
-	{
-		// referenciaParticion es donde se particiona la referencia
-		//arr ahora está en el lugar correcto
-		int referenciaParticion = particion(arr, bajo, alto);
-
-		// separadamente elementos ordenados antes
-		// partición y luego prtición
-		QuickSortSecuencial(arr, bajo, referenciaParticion - 1);
-		QuickSortSecuencial(arr, referenciaParticion + 1, alto);
-	}
-}
-
-void Controlador::QuickSortParalelo()
-{
-}
-
-void Controlador::heap(int arr[], int n, int i)
-{
-	int masGrande = i;  // masGrande como raíz
-	int izq = 2 * i + 1;  // izquierdo = 2*i + 1
-	int der = 2 * i + 2;  // derecho = 2*i + 2
-
-						  // si el hijo izquierdo es más grande que la raíz
-	if (izq < n && arr[izq] > arr[masGrande]) {
-		masGrande = izq;
-	}
-	// si el hijo izquierdo es más grande
-	if (der < n && arr[der] > arr[masGrande]) {
-		masGrande = der;
-	}
-	// si el mas grande no es la raíz
-	if (masGrande != i)
-	{
-		swap(arr[i], arr[masGrande]);
-
-		// llamada recuriva a heap para los subarboles
-		heap(arr, n, masGrande);
-	}
-}
-
-void Controlador::swapquick(int* a, int* b)
-{
-	int t = *a;
-	*a = *b;
-	*b = t;
-}
-
-int Controlador::particion(vector<int> arr, int bajo, int alto)
-{
-	int pivote = arr[alto];    // pivote
-	int i = (bajo - 1);  // referencia al más pequeño elemento
-
-	for (int j = bajo; j <= alto - 1; j++)
-	{
-		// si el elemento actual es iguaal o más pequeño que el pivote
-		if (arr[j] <= pivote)
-		{
-			i++;    // se le suma 1 a la referencia
-			swapquick(&arr[i], &arr[j]); //intercambiar
-		}
-	}
-	swapquick(&arr[i + 1], &arr[alto]); //intercambiar
-	return (i + 1);
-}
-
 void Controlador::LeerArchivo()
 {
 	// asignamos el archivo astronauta para su lectura
@@ -204,3 +79,66 @@ void Controlador::LeerArchivo()
 	// cerramos el archivo
 	archivoDatos.close();
 }
+
+void Controlador::heapSortS()
+{
+	cout << "nombre del algoritmo utilizado: HeapSort Secuencial" << endl;
+	cout << "numero de datos del arreglo " << arr.size() << endl;
+	cout << "arreglo original" << endl;
+	Imprimir();
+	clock_t start, end;
+	double time_used;
+	start = clock();
+	heapSort();
+	end = clock();
+	cout << "arreglo ordenado" << endl;
+	Imprimir();
+	time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+	cout << "tiempo que demoro el ordenamiento " << time_used << endl;
+	system("pause");
+}
+
+void Controlador::heapSort()
+{
+	for (int i = arr.size() / 2 - 1; i >= 0; i--)
+		heap(arr.size(), i);
+
+	for (int i = arr.size() - 1; i >= 0; i--)
+	{
+		swap(arr[0], arr[i]);
+		heap(i, 0);
+	}
+}
+
+void Controlador::heap(int n, int i)
+{
+	int masGrande = i;  // masGrande como raíz
+	int izq = 2 * i + 1;  // izquierdo = 2*i + 1
+	int der = 2 * i + 2;  // derecho = 2*i + 2
+
+						  // si el hijo izquierdo es más grande que la raíz
+	if (izq < n && arr[izq] > arr[masGrande]) {
+		masGrande = izq;
+	}
+	// si el hijo izquierdo es más grande
+	if (der < n && arr[der] > arr[masGrande]) {
+		masGrande = der;
+	}
+	// si el mas grande no es la raíz
+	if (masGrande != i)
+	{
+		swap(arr[i], arr[masGrande]);
+
+		// llamada recuriva a heap para los subarboles
+		heap(n, masGrande);
+	}
+}
+
+void Controlador::Imprimir()
+{
+	for (int i = 0; i<arr.size(); ++i)
+		cout << arr[i] << " ";
+	cout << "\n";
+}
+
+

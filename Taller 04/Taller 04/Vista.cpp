@@ -14,6 +14,8 @@ Vista::~Vista()
 
 void Vista::MenuPrincipal()
 {
+	//leemos el archivo
+	Ejecutar.LeerArchivo();
 	cout << " Este es el taller 04" << endl << endl;
 	//declaramos una variable para seleccionar la opcion elegida
 	int opcion = 0;
@@ -82,20 +84,20 @@ void Vista::MenuArreglo()
 		case 1:
 			//limpiamos la pantalla
 			system("cls");
-			Ejecutar.QuickSortS();
+			
 			break;
 		case 2:
 			//limpiamos la pantalla
 			system("cls");
-			Ejecutar.QuickSortParalelo();
+			
 			break;
 		case 3:
 			//limpiamos la pantalla
 			system("cls");
-			Ejecutar.HeapsortS();
+			Ejecutar.heapSortS();
 			break;
 		case 4:
-			Ejecutar.HeapsortParalelo();
+		
 			//limpiamos la pantalla
 			system("cls");
 			break;
