@@ -1,8 +1,11 @@
 #include "Controlador.h"
 #include <iostream>
 #include <ctime> 
+#include <fstream>
+#include <sstream>
+#include <vector>
 using namespace std;
-int arr[] = { 1254,1253,5,3,9,6,7,1,15,21,13 };
+vector<int> arr;
 int n = sizeof(arr) / sizeof(arr[0]);
 
 Controlador::Controlador()
@@ -41,9 +44,9 @@ int Controlador::ValidarNumeroOpcion()
 	return dato;
 }
 
-void Controlador::Imprimirarreglo(int arr[], int n)
+void Controlador::Imprimirarreglo(vector<int> arr)
 {
-	for (int i = 0; i<n; ++i)
+	for (int i = 0; i<arr.size(); ++i)
 		cout << arr[i] << " ";
 	cout << "\n";
 }
@@ -69,7 +72,7 @@ void Controlador::QuickSortS()
 	cout << "Nombre del algoritmo utilizado : Heapsort Secuencial" << endl;
 	cout << "Numero de datos del arreglo" << " " << endl;
 	cout << "Arreglo Original" << endl;
-	Imprimirarreglo(arr, n);
+	Imprimirarreglo(arr);
 	unsigned t0, t1;
 	t0 = clock();
 	QuickSortSecuencial(arr, 0, n - 1);
@@ -98,7 +101,7 @@ void Controlador::HeapsortS()
 	system("pause");
 }
 
-void Controlador::QuickSortSecuencial(int arr[], int bajo, int alto)
+void Controlador::QuickSortSecuencial(vector<int> arr, int bajo, int alto)
 {
 	if (bajo < alto)
 	{
@@ -148,7 +151,7 @@ void Controlador::swapquick(int* a, int* b)
 	*b = t;
 }
 
-int Controlador::particion(int arr[], int bajo, int alto)
+int Controlador::particion(vector<int> arr, int bajo, int alto)
 {
 	int pivote = arr[alto];    // pivote
 	int i = (bajo - 1);  // referencia al más pequeño elemento
@@ -168,4 +171,36 @@ int Controlador::particion(int arr[], int bajo, int alto)
 
 void Controlador::LeerArchivo()
 {
+	// asignamos el archivo astronauta para su lectura
+	ifstream archivoDatos("datos.txt");
+	//verificamos que el archivo astronauta exista
+	if (!archivoDatos) {
+		// si no existe, lanza un mensaje de error y se termina la ejecucion
+		cout << " El archivo datos no existe" << endl;
+		// se realiza una pausa para que lea el mensaje
+		system("pause");
+		// se termina la ejecucion del programa
+		exit(0);
+	}
+	//verificamos el peso del archivo
+	archivoDatos.seekg(0, ios::end);
+	//determinamos que el archivo se encuentra vacio
+	if (archivoDatos.tellg() < 1) {
+		// si no existe, lanza un mensaje de error y se termina la ejecucion
+		cout << " El archivo Datos se encuentra vacio" << endl;
+		// se realiza una pausa para que lea el mensaje
+		system("pause");
+		// se termina la ejecucion del programa
+		exit(0);
+	}
+	//regresamos el apuntador al inicio
+	archivoDatos.seekg(0, ios::beg);
+	string valor;
+	while (!archivoDatos.eof()) {
+		getline(archivoDatos, valor, ',');
+		//guardamos en el arreglo
+		arr.push_back(stoi(valor));
+	}
+	// cerramos el archivo
+	archivoDatos.close();
 }
