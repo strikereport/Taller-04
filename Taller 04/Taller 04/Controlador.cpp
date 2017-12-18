@@ -93,8 +93,8 @@ void Controlador::heapSortS()
 	end = clock();
 	cout << "arreglo ordenado" << endl;
 	Imprimir();
-	time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
-	cout << "tiempo que demoro el ordenamiento " << time_used << endl;
+	time_used = ((double)(end - start) / CLOCKS_PER_SEC);
+	cout << "tiempo que demoro el ordenamiento " << time_used * 1000.0 << endl;
 	system("pause");
 }
 
@@ -139,6 +139,64 @@ void Controlador::Imprimir()
 	for (int i = 0; i<arr.size(); ++i)
 		cout << arr[i] << " ";
 	cout << "\n";
+}
+
+void Controlador::quickSortS()
+{
+	cout << "nombre del algoritmo utilizado: quickSort secuencial" << endl;
+	cout << "numero de datos del arreglo " << arr.size() << endl;
+	cout << "arreglo original" << endl;
+	Imprimir();
+	clock_t start, end;
+	double time_used;
+	start = clock();
+	quickSort(0, arr.size() - 1);
+	end = clock();
+	cout << "arreglo ordenado" << endl;
+	Imprimir();
+	time_used = ((double)(end - start) / CLOCKS_PER_SEC);
+	cout << "tiempo que demoro el ordenamiento " << time_used << endl;
+	system("pause");
+}
+
+void Controlador::quickSort(int bajo, int alto)
+{
+	if (bajo < alto)
+	{
+		// referenciaParticion es donde se particiona la referencia
+		//arr ahora está en el lugar correcto
+		int referenciaParticion = particion(bajo, alto);
+
+		// separadamente elementos ordenados antes
+		// partición y luego prtición
+		quickSort(bajo, referenciaParticion - 1);
+		quickSort(referenciaParticion + 1, alto);
+	}
+}
+
+void Controlador::swaps(int* a, int* b)
+{
+	int t = *a;
+	*a = *b;
+	*b = t;
+}
+
+int Controlador::particion(int bajo, int alto)
+{
+	int pivote = arr[alto];    // pivote
+	int i = (bajo - 1);  // referencia al más pequeño elemento
+
+	for (int j = bajo; j <= alto - 1; j++)
+	{
+		// si el elemento actual es iguaal o más pequeño que el pivote
+		if (arr[j] <= pivote)
+		{
+			i++;    // se le suma 1 a la referencia
+			swaps(&arr[i], &arr[j]); //intercambiar
+		}
+	}
+	swaps(&arr[i + 1], &arr[alto]); //intercambiar
+	return (i + 1);
 }
 
 
