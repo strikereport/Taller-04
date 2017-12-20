@@ -19,5 +19,8 @@ public:
 	void quickSortHilos(int arr[], int bajo, int alto, int nHilos);
 	void copiar(int []);
 	void reinicio(int arr[], int copia[]);
+	void heapSortP();
+	void heapSortHilos(int[], int, int nHilos);
+	void borrar();
 };
 

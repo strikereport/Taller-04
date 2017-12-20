@@ -46,6 +46,7 @@ void Vista::MenuPrincipal()
 			opcion = -1;
 			//damos el mensaje de despedida
 			cout << "Gracias por acceder a nuestro sistema, Hasta pronto" << endl;
+			Ejecutar.borrar();
 			system("pause");
 			break;
 		default:
@@ -97,9 +98,9 @@ void Vista::MenuArreglo()
 			Ejecutar.heapSortS();
 			break;
 		case 4:
-		
 			//limpiamos la pantalla
 			system("cls");
+			Ejecutar.heapSortP();
 			break;
 		case 5:
 			//cambiamos la condicion para salir

@@ -309,6 +309,52 @@ void Controlador::reinicio(int arr[], int copia[])
 	}
 }
 
+void Controlador::heapSortP()
+{
+	cout << "nombre del algoritmo utilizado: heapSort en paralelo" << endl;
+	cout << "numero de datos del arreglo " << tamanio << endl;
+	cout << "arreglo original" << endl;
+	Imprimir();
+	copiar(arr);
+	double time_used;
+	int hilos = validarNumero();
+	cout << "numero de hilos ocupados " << hilos << endl;
+	clock_t tiempo = clock();
+	heapSortHilos(arr,tamanio, hilos);
+	cout << "arreglo ordenado" << endl;
+	Imprimir();
+	time_used = ((double)(clock() - tiempo) / 1000);
+	cout << "tiempo que demoro el ordenamiento " << time_used << " segundos" << endl;
+	reinicio(arr, copia);
+	system("pause");
+}
+
+void Controlador::heapSortHilos(int arr[], int n, int nHilos)
+{
+	if (nHilos > 0) {
+		thread h1([&] {heapSortHilos(ref(arr), n, nHilos - 1); });
+		thread h2([&] {heapSortHilos(ref(arr), n, nHilos - 1); });
+		h1.join();
+		h2.join();
+	}
+	else {
+		for (int i = n / 2 - 1; i >= 0; i--)
+			heap(arr, n, i);
+
+		for (int i = n - 1; i >= 0; i--)
+		{
+			swap(arr[0], arr[i]);
+			heap(arr, i, 0);
+		}
+	}
+}
+
+void Controlador::borrar()
+{
+	delete[]arr;
+	delete[]copia;
+}
+
 
 
 
