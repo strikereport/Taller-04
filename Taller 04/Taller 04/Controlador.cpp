@@ -1,4 +1,7 @@
 #include "Controlador.h"
+#include <time.h> 
+#include <stdio.h> 
+#include <dos.h> 
 #include <thread>
 #include <iostream>
 #include <ctime> 
@@ -100,14 +103,12 @@ void Controlador::heapSortS()
 	cout << "arreglo original" << endl;
 	Imprimir();
 	copiar(arr);
-	clock_t start, end;
+	clock_t tiempo = clock();
 	double time_used;
-	start = clock();
 	heapSort(arr, tamanio);
-	end = clock();
 	cout << "arreglo ordenado" << endl;
 	Imprimir();
-	time_used = ((double)(end - start) / CLOCKS_PER_SEC);
+	time_used = ((double)(clock() - tiempo) / 1000);
 	cout << "tiempo que demoro el ordenamiento " << time_used << " segundos"<< endl;
 	reinicio(arr, copia);
 	system("pause");
@@ -163,14 +164,12 @@ void Controlador::quickSortS()
 	cout << "arreglo original" << endl;
 	Imprimir();
 	copiar(arr);
-	clock_t start, end;
+	clock_t tiempo = clock();
 	double time_used;
-	start = clock();
 	quickSort(arr, 0, tamanio - 1);
-	end = clock();
 	cout << "arreglo ordenado" << endl;
 	Imprimir();
-	time_used = ((double)(end - start) / CLOCKS_PER_SEC);
+	time_used = ((double)(clock() - tiempo) / 1000);
 	cout << "tiempo que demoro el ordenamiento " << time_used << " segundos" << endl;
 	reinicio(arr, copia);
 	system("pause");
@@ -223,16 +222,14 @@ void Controlador::quickSortP()
 	cout << "arreglo original" << endl;
 	Imprimir();
 	copiar(arr);
-	clock_t start, end;
 	double time_used;
 	int hilos = validarNumero();
 	cout << "numero de hilos ocupados " << hilos << endl;
-	start = clock();
+	clock_t tiempo = clock();
 	quickSortHilos(arr, 0, tamanio - 1, hilos);
-	end = clock();
 	cout << "arreglo ordenado" << endl;
 	Imprimir();
-	time_used = ((double)(end - start) / CLOCKS_PER_SEC);
+	time_used = ((double)(clock() - tiempo) / 1000);
 	cout << "tiempo que demoro el ordenamiento " << time_used << " segundos" << endl;
 	reinicio(arr, copia);
 	system("pause");
