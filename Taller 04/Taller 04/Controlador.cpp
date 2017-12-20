@@ -1,12 +1,14 @@
 #include "Controlador.h"
-#include <time.h>
+#include <thread>
 #include <iostream>
 #include <ctime> 
 #include <fstream>
 #include <sstream>
 #include <vector>
 using namespace std;
-vector<int> arr;
+int * arr = NULL;
+int * copia = NULL;
+int tamanio = 0;
 
 Controlador::Controlador()
 {
@@ -73,44 +75,57 @@ void Controlador::LeerArchivo()
 	string valor;
 	while (!archivoDatos.eof()) {
 		getline(archivoDatos, valor, ',');
-		//guardamos en el arreglo
-		arr.push_back(stoi(valor));
+		tamanio++;
 	}
 	// cerramos el archivo
 	archivoDatos.close();
+	//creamos el arreglo 
+	arr = new int[tamanio];
+	int i = 0;
+	ifstream archivoDatos2("datos.txt");
+	while (!archivoDatos2.eof()) {
+		getline(archivoDatos2, valor, ',');
+		arr[i] = stoi(valor);
+		i++;
+	}
+	// cerramos el archivo
+	archivoDatos2.close();
+	copia = new int[tamanio];
 }
 
 void Controlador::heapSortS()
 {
 	cout << "nombre del algoritmo utilizado: HeapSort Secuencial" << endl;
-	cout << "numero de datos del arreglo " << arr.size() << endl;
+	cout << "numero de datos del arreglo " << tamanio << endl;
 	cout << "arreglo original" << endl;
 	Imprimir();
+	copiar(arr);
 	clock_t start, end;
 	double time_used;
 	start = clock();
-	heapSort();
+	heapSort(arr, tamanio);
 	end = clock();
 	cout << "arreglo ordenado" << endl;
 	Imprimir();
 	time_used = ((double)(end - start) / CLOCKS_PER_SEC);
-	cout << "tiempo que demoro el ordenamiento " << time_used * 1000.0 << endl;
+	cout << "tiempo que demoro el ordenamiento " << time_used << " segundos"<< endl;
+	reinicio(arr, copia);
 	system("pause");
 }
 
-void Controlador::heapSort()
+void Controlador::heapSort(int arr[], int n)
 {
-	for (int i = arr.size() / 2 - 1; i >= 0; i--)
-		heap(arr.size(), i);
+	for (int i = n / 2 - 1; i >= 0; i--)
+		heap(arr, n, i);
 
-	for (int i = arr.size() - 1; i >= 0; i--)
+	for (int i = n - 1; i >= 0; i--)
 	{
 		swap(arr[0], arr[i]);
-		heap(i, 0);
+		heap(arr, i, 0);
 	}
 }
 
-void Controlador::heap(int n, int i)
+void Controlador::heap(int arr[],int n, int i)
 {
 	int masGrande = i;  // masGrande como raíz
 	int izq = 2 * i + 1;  // izquierdo = 2*i + 1
@@ -130,13 +145,13 @@ void Controlador::heap(int n, int i)
 		swap(arr[i], arr[masGrande]);
 
 		// llamada recuriva a heap para los subarboles
-		heap(n, masGrande);
+		heap(arr, n, masGrande);
 	}
 }
 
 void Controlador::Imprimir()
 {
-	for (int i = 0; i<arr.size(); ++i)
+	for (int i = 0; i<tamanio; ++i)
 		cout << arr[i] << " ";
 	cout << "\n";
 }
@@ -144,33 +159,35 @@ void Controlador::Imprimir()
 void Controlador::quickSortS()
 {
 	cout << "nombre del algoritmo utilizado: quickSort secuencial" << endl;
-	cout << "numero de datos del arreglo " << arr.size() << endl;
+	cout << "numero de datos del arreglo " << tamanio << endl;
 	cout << "arreglo original" << endl;
 	Imprimir();
+	copiar(arr);
 	clock_t start, end;
 	double time_used;
 	start = clock();
-	quickSort(0, arr.size() - 1);
+	quickSort(arr, 0, tamanio - 1);
 	end = clock();
 	cout << "arreglo ordenado" << endl;
 	Imprimir();
 	time_used = ((double)(end - start) / CLOCKS_PER_SEC);
-	cout << "tiempo que demoro el ordenamiento " << time_used << endl;
+	cout << "tiempo que demoro el ordenamiento " << time_used << " segundos" << endl;
+	reinicio(arr, copia);
 	system("pause");
 }
 
-void Controlador::quickSort(int bajo, int alto)
+void Controlador::quickSort(int arr[],int bajo, int alto)
 {
 	if (bajo < alto)
 	{
 		// referenciaParticion es donde se particiona la referencia
 		//arr ahora está en el lugar correcto
-		int referenciaParticion = particion(bajo, alto);
+		int referenciaParticion = particion(arr, bajo, alto);
 
 		// separadamente elementos ordenados antes
 		// partición y luego prtición
-		quickSort(bajo, referenciaParticion - 1);
-		quickSort(referenciaParticion + 1, alto);
+		quickSort(arr, bajo, referenciaParticion - 1);
+		quickSort(arr, referenciaParticion + 1, alto);
 	}
 }
 
@@ -181,7 +198,7 @@ void Controlador::swaps(int* a, int* b)
 	*b = t;
 }
 
-int Controlador::particion(int bajo, int alto)
+int Controlador::particion(int arr[],int bajo, int alto)
 {
 	int pivote = arr[alto];    // pivote
 	int i = (bajo - 1);  // referencia al más pequeño elemento
@@ -198,5 +215,103 @@ int Controlador::particion(int bajo, int alto)
 	swaps(&arr[i + 1], &arr[alto]); //intercambiar
 	return (i + 1);
 }
+
+void Controlador::quickSortP()
+{
+	cout << "nombre del algoritmo utilizado: quickSort en paralelo" << endl;
+	cout << "numero de datos del arreglo " << tamanio << endl;
+	cout << "arreglo original" << endl;
+	Imprimir();
+	copiar(arr);
+	clock_t start, end;
+	double time_used;
+	int hilos = validarNumero();
+	cout << "numero de hilos ocupados " << hilos << endl;
+	start = clock();
+	quickSortHilos(arr, 0, tamanio - 1, hilos);
+	end = clock();
+	cout << "arreglo ordenado" << endl;
+	Imprimir();
+	time_used = ((double)(end - start) / CLOCKS_PER_SEC);
+	cout << "tiempo que demoro el ordenamiento " << time_used << " segundos" << endl;
+	reinicio(arr, copia);
+	system("pause");
+}
+
+int Controlador::validarNumero()
+{
+	//creamos variables locales
+	int dato = 0;
+	bool continuar;
+	int cont = 0;
+	do {
+		continuar = false;
+		cin.clear();
+		if (cont > 0)cin.ignore(1024, '\n');
+		{
+			cout << "Ingrese un numero" << endl;
+			cin >> dato;
+			cont++;
+		}
+		if (cin.fail() && cin.rdstate() ) {
+			//limpiamos la pantalla
+			system("cls");
+			//mandamos un mensaje de error
+			cout << "Ingreso un caracter no valido, Ingrese Nuevamente un numero" << endl << endl;
+			//continuamos hasta obtener un numero
+			continuar = true;
+		}
+		else {
+			if (dato < 2) {
+				//limpiamos la pantalla
+				system("cls");
+				//mandamos un mensaje de error
+				cout << "Ingreso un numero de hilos bajo, Ingrese Nuevamente un numero" << endl << endl;
+				//continuamos hasta obtener un numero
+				continuar = true;
+			}
+		}
+	} while (continuar == true && dato < 2);
+	//si es un numero se retorna
+	return dato;
+}
+
+void Controlador::quickSortHilos(int arr[], int bajo, int alto, int nHilos)
+{
+	if (bajo < alto)
+	{
+		// referenciaParticion es donde se particiona la referencia
+		//arr ahora está en el lugar correcto
+		int referenciaParticion = particion(arr, bajo, alto);
+		if (nHilos > 0) {
+			thread h1([&] {quickSortHilos(ref(arr), bajo, alto, nHilos - 1); });
+			thread h2([&] {quickSortHilos(ref(arr), bajo, alto, nHilos - 1); });
+			h1.join();
+			h2.join();
+		}
+		else {
+			// separadamente elementos ordenados antes
+			// partición y luego prtición
+			quickSort(arr, bajo, referenciaParticion - 1);
+			quickSort(arr, referenciaParticion + 1, alto);
+		}
+	}
+}
+
+void Controlador::copiar(int arr[])
+{
+	for (int i = 0; i < tamanio; i++) {
+		copia[i] = arr[i];
+	}
+}
+
+void Controlador::reinicio(int arr[], int copia[])
+{
+	for (int i = 0; i < tamanio; i++) {
+		arr[i] = copia[i];
+	}
+}
+
+
 
 

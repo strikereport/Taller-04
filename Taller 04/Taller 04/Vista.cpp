@@ -84,12 +84,12 @@ void Vista::MenuArreglo()
 		case 1:
 			//limpiamos la pantalla
 			system("cls");
-			Ejecutar.heapSortS();
+			Ejecutar.quickSortS();
 			break;
 		case 2:
 			//limpiamos la pantalla
 			system("cls");
-			
+			Ejecutar.quickSortP();
 			break;
 		case 3:
 			//limpiamos la pantalla
